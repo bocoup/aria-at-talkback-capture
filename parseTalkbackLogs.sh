@@ -130,9 +130,7 @@ echo "Press Ctrl+C to stop capturing logs when finished\n"
 $ADB_LOCATION logcat -c
 
 # Start capturing logs and filter for TalkBack utterances
-# They either have utterance* or onFragmentRangeStarted on the same line
-# Lines with onFragmentRangeStarted typically have 'speak word = WORD' following it
-$ADB_LOCATION logcat --pid=$($ADB_LOCATION shell pidof -s $TALKBACK_PACKAGE_NAME) | grep -i "talkback\|utterance\|onFragmentRangeStarted" | while read -r line; do
+$ADB_LOCATION logcat --pid=$($ADB_LOCATION shell pidof -s $TALKBACK_PACKAGE_NAME) | grep -i "talkback\|utterance" | while read -r line; do
   # Look for ACTION_CLICK and Run Test Setup in the same line
   # https://developer.android.com/reference/android/view/accessibility/AccessibilityNodeInfo.AccessibilityAction#ACTION_CLICK
   if echo "$line" | grep -q "ACTION_CLICK.*Run Test Setup"; then
@@ -155,23 +153,6 @@ $ADB_LOCATION logcat --pid=$($ADB_LOCATION shell pidof -s $TALKBACK_PACKAGE_NAME
         # Join the utterances with double spaces. This is to match how other ATs' utterances have been getting captured; TODO: may not be necessary)
         printf "%s  " "$new_utterance" >> "$TEMP_FILE"
       fi
-
-      # if echo "$next_line" | grep -q "text="; then
-      #   new_utterance=$(echo "$next_line" | sed -E 's/.*text="([^"]*)".*/\1/')
-      #   utterances="${utterances}${new_utterance}  "
-      # fi
-
-      # if echo "$next_line" | grep -q "onFragmentRangeStarted"; then
-      #   # Debug output to see the full line
-      #   echo "DEBUG: Found onFragmentRangeStarted line: $next_line"
-
-      #   # Try to extract the text after 'speak word ='
-      #   if echo "$next_line" | grep -q "speak word ="; then
-      #     # Extract everything after 'speak word =' up to the end of the line
-      #     utterance=$(echo "$next_line" | sed -E 's/.*speak word = ([^,]*).*/\1/')
-      #     echo "Utterance: $utterance"
-      #   fi
-      # fi
     done
   fi
 done
