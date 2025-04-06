@@ -67,9 +67,9 @@ if ! check_developer_mode; then
   exit 1
 fi
 
+echo "\nUtterances will continue to be collected until the end of the example is found.\nYou can also press Ctrl+C to stop capturing and display the collected utterances\n"
 echo "Starting to capture TalkBack logs..."
 echo "Please press the 'Run Test Setup' button now..."
-echo "Press Ctrl+C to stop capturing logs when finished\n"
 
 # Clear any existing logcat buffer
 $ADB_LOCATION logcat -c
@@ -79,15 +79,21 @@ $ADB_LOCATION logcat --pid=$($ADB_LOCATION shell pidof -s $TALKBACK_PACKAGE_NAME
   # Look for ACTION_CLICK and Run Test Setup in the same line
   # https://developer.android.com/reference/android/view/accessibility/AccessibilityNodeInfo.AccessibilityAction#ACTION_CLICK
   if echo "$line" | grep -q "ACTION_CLICK.*Run Test Setup"; then
-    echo "Found 'Run Test Setup' button press"
+    echo "--- Start of Example ---\n"
     # Continue capturing the next utterances
     while read -r next_line; do
       if [ "$DISPLAY_ALL_LINES" = true ]; then
         echo "$next_line"
       fi
 
+      # Check for End of Example
+      if echo "$next_line" | grep -q "End of Example"; then
+        echo "\n--- End of Example ---"
+        cleanup
+      fi
+
       # Extract text from lines containing "text="
-      if echo "$next_line" | grep -q "utterance"; then
+      if echo "$next_line" | grep -q "text=.*utterance"; then
         if [ "$VERBOSE" = true ] && [ "$DISPLAY_ALL_LINES" = false ]; then
           echo "$next_line"
         fi
@@ -95,7 +101,7 @@ $ADB_LOCATION logcat --pid=$($ADB_LOCATION shell pidof -s $TALKBACK_PACKAGE_NAME
         new_utterance=$(echo "$next_line" | sed 's/.*text="\([^"]*\)".*/\1/')
         echo "$new_utterance"
 
-        # Join the utterances with double spaces. This is to match how other ATs' utterances have been getting captured; TODO: may not be necessary)
+        # Join the utterances with double spaces. This is to match how other ATs' utterances have been getting captured; (TODO: formatting in that way may not be necessary -- revisit)
         printf "%s  " "$new_utterance" >> "$TEMP_FILE"
       fi
     done

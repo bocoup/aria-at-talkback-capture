@@ -58,11 +58,12 @@ find_adb() {
 check_developer_mode() {
   if ! $ADB_LOCATION shell settings get global development_settings_enabled 2>/dev/null | grep -q "1"; then
     echo "Developer mode is not enabled on the device."
-    echo "Please enable Developer mode by:"
+    echo "Please enable Developer mode by doing the following:"
     echo "1. Go to Settings > About phone"
     echo "2. Tap 'Build number' 7 times"
     echo "3. Go back to Settings > System > Developer options"
     echo "4. Enable 'Developer options'"
+    echo "5. Enable 'USB Debugging'"
     return 1
   fi
   return 0
@@ -89,14 +90,14 @@ check_talkback_enabled() {
 # Function to enable TalkBack
 enable_talkback() {
   $ADB_LOCATION shell settings put secure enabled_accessibility_services $TALKBACK_PACKAGE_NAME/$TALKBACK_PACKAGE_NAME.TalkBackService
-  # $ADB_LOCATION shell settings put secure accessibility_verbose_logging 1
+  $ADB_LOCATION shell settings put secure accessibility_verbose_logging 1
   $ADB_LOCATION shell settings put secure accessibility_enabled 1
 }
 
 # Function to disable TalkBack
 disable_talkback() {
   $ADB_LOCATION shell settings put secure enabled_accessibility_services $TALKBACK_PACKAGE_NAME/NONE
-  # $ADB_LOCATION shell settings put secure accessibility_verbose_logging 0
+  $ADB_LOCATION shell settings put secure accessibility_verbose_logging 0
   $ADB_LOCATION shell settings put secure accessibility_enabled 0
 }
 
