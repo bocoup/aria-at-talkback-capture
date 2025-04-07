@@ -39,7 +39,7 @@ while test $# -gt 0; do
   esac
 done
 
-# Handle Ctrl+C interrupt to capture the collected utterances
+# Handle interrupt to capture the collected utterances
 cleanup() {
   echo "\n\nCollected utterances:"
   if [ -s "$TEMP_FILE" ]; then
@@ -54,16 +54,19 @@ cleanup() {
   exit 0
 }
 
-# Set up trap for Ctrl+C
+# Set up trap for interrupt signal (Ctrl+C)
 trap cleanup INT
 
-# Check if adb is available
 if ! find_adb; then
   exit 1
 fi
 
-# Check if developer mode is enabled
 if ! check_developer_mode; then
+  exit 1
+fi
+
+if ! check_talkback_enabled; then
+  echo "TalkBack is not enabled. You can run enableTalkback.sh to enable it."
   exit 1
 fi
 
@@ -86,7 +89,7 @@ $ADB_LOCATION logcat --pid=$($ADB_LOCATION shell pidof -s $TALKBACK_PACKAGE_NAME
         echo "$next_line"
       fi
 
-      # Check for End of Example
+      # Check for "End of Example" text
       if echo "$next_line" | grep -q "End of Example"; then
         echo "\n--- End of Example ---"
         cleanup

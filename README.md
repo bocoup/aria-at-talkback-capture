@@ -21,7 +21,7 @@ Enables TalkBack on the connected Android device and turns on accessibility logg
 
 Disables TalkBack on the connected Android device and turns off accessibility logging.
 
-### parseTalkbackLogs.sh
+### captureUtterances.sh
 
 Captures TalkBack spoken output from when the "Run Test Setup" button is pressed until either:
 
@@ -86,6 +86,8 @@ Once available, the scripts will automatically use the appropriately found ADB.
 
 ## TODO
 
+- Bundle adb.
 - Adding cross-platform support. The scripts were developed with MacOS in mind (which shows by the adb location assumptions, copy utils, etc). This should be extended to Linux and Windows platforms.
 - Security considerations around the `openWebPage.sh` script.
+- There's a speaker queue coming from TalkBack which is sometimes different from the utterances lines being captured. One-off instances have popped up where the difference is significant enough that an utterance could be missed. Worth digging into to make this more robust.
 - Investigating basic CI/CD support if this is something to move forward with.
