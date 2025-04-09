@@ -1,13 +1,13 @@
-# TalkBack Testing Scripts
+# ARIA-AT Talkback Capture
 
-This repository contains prototyping scripts for capturing TalkBack utterances on Android devices. Mainly to serve the purposes of [ARIA-AT](https://aria-at.w3.org).
+This repository contains prototyping scripts for capturing TalkBack utterances on Android devices. Intended to serve the purposes of [ARIA-AT](https://aria-at.w3.org).
 
 ## Background
 
-This was incepted as a native Android application. Such that a user would be able to have the application capture the relevant utterances in the background, after the "Run Test Setup" button on a test was pressed. They would be provided with some widget or return to the application to immediately copy the utterances found and paste into the relevant output fields. After more discussions and consideration of the potential users to engage with such a product, it made more sense to segue due to, but not limited to:
+This was incepted as a native Android application. Such that a user would be able to have the application capture the relevant utterances in the background, after the "Run Test Setup" button on a test was pressed. They would be provided with some widget or return to the application to immediately copy the utterances found and paste into the relevant output field(s). After more discussions and consideration of the potential users to engage with such a product, it made more sense to segue due to, but not limited to:
 
 1. Less interest today in providing a fully built out responsive experience for [ARIA-AT](https://aria-at.w3.org).
-2. Majority of the current users mainly seem to be web-focused so requiring heavy usage on a mobile platform may be less appealing.
+2. Comfort with ARIA-AT through desktop has already been established so requiring heavy usage on a mobile platform may be less appealing.
 
 The result of that are the following scripts. The idea is these scripts can potentially be served behind some extension of the ARIA-AT web app, it's own tiny web app or some desktop-based app.
 
@@ -89,5 +89,5 @@ Once available, the scripts will automatically use the appropriately found ADB.
 - Bundle adb.
 - Adding cross-platform support. The scripts were developed with MacOS in mind (which shows by the adb location assumptions, copy utils, etc). This should be extended to Linux and Windows platforms.
 - Security considerations around the `openWebPage.sh` script.
-- There's a speaker queue coming from TalkBack which is sometimes different from the utterances lines being captured. One-off instances have popped up where the difference is significant enough that an utterance could be missed. Worth digging into to make this more robust.
+- There's a speaker queue coming from TalkBack which is sometimes different from the utterances lines being captured. One-off instances have popped up where the difference is significant enough that an utterance could be missed. This should be made more robust to combine both sources.
 - Investigating basic CI/CD support if this is something to move forward with.
