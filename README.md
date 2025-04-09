@@ -59,11 +59,9 @@ Options:
 - `-h, --help`: Display help information
 - `-c, --clear-adb-logs`: Clear the logcat buffer after capturing the logs
 
-## ADB Setup
+## Prerequesites
 
-The scripts will require an installed version of [ADB](https://developer.android.com/tools/adb).
-
-Once available, the scripts will automatically use the appropriately found ADB.
+An installed version of [ADB](https://developer.android.com/tools/adb) is required. Preferred for it to be included on your PATH (otherwise, it will be just be searched for in likely locations)
 
 ### Installing System ADB
 
