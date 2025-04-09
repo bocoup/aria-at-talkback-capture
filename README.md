@@ -61,7 +61,7 @@ Options:
 
 ## Prerequesites
 
-An installed version of [ADB](https://developer.android.com/tools/adb) is required. Preferred for it to be included on your PATH (otherwise, it will be just be searched for in likely locations)
+An installed version of [ADB](https://developer.android.com/tools/adb) is required. Preferred for it to be included on your PATH (otherwise, it will be searched for in likely locations).
 
 ### Installing System ADB
 
