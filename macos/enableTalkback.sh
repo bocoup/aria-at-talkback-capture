@@ -1,6 +1,7 @@
 #!/bin/sh
 
 SCRIPT_DIR="$(dirname "$0")"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 # Source the common functions
 . "$SCRIPT_DIR/common.sh"
@@ -20,19 +21,19 @@ if ! check_talkback_installed; then
   exit 1
 fi
 
-# Check if TalkBack is enabled
-if ! check_talkback_enabled; then
-  echo "TalkBack is already disabled."
+# Check if TalkBack is already enabled
+if check_talkback_enabled; then
+  echo "TalkBack is already enabled."
   exit 0
 fi
 
-echo "Disabling TalkBack..."
-disable_talkback
+echo "Enabling TalkBack..."
+enable_talkback
 
-if check_talkback_enabled; then
-  echo "Failed to disable TalkBack."
+if ! check_talkback_enabled; then
+  echo "Failed to enable TalkBack."
   exit 1
 else
-  echo "TalkBack has been disabled."
+  echo "TalkBack has been enabled."
   exit 0
 fi

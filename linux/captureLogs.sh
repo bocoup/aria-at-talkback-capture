@@ -1,12 +1,13 @@
 #!/bin/sh
 
 SCRIPT_DIR="$(dirname "$0")"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 # Source the common functions
 . "$SCRIPT_DIR/common.sh"
 
 TALKBACK_PACKAGE_NAME="com.google.android.marvin.talkback"
-TALKBACK_LOGS_OUTPUT="$SCRIPT_DIR/talkback_capture.log"
+TALKBACK_LOGS_OUTPUT="$ROOT_DIR/talkback_capture.log"
 
 # Flags
 CLEAR_ADB_LOGS=false

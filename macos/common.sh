@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Get the directory where the script is located
+SCRIPT_DIR="$(dirname "$0")"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+
 TALKBACK_PACKAGE_NAME="com.google.android.marvin.talkback"
 
 # Function to check if adb exists at location and is executable

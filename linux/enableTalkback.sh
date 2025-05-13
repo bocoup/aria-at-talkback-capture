@@ -1,6 +1,7 @@
 #!/bin/sh
 
 SCRIPT_DIR="$(dirname "$0")"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 # Source the common functions
 . "$SCRIPT_DIR/common.sh"

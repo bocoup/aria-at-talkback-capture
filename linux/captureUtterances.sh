@@ -1,6 +1,7 @@
 #!/bin/sh
 
 SCRIPT_DIR="$(dirname "$0")"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 # Source the common functions
 . "$SCRIPT_DIR/common.sh"
@@ -45,9 +46,19 @@ cleanup() {
   if [ -s "$TEMP_FILE" ]; then
     utterances=$(cat "$TEMP_FILE")
     echo "$utterances"
-    # Copy to clipboard
-    echo "$utterances" | pbcopy
-    echo "\nCopied to clipboard"
+    # Copy to clipboard using xclip if available, otherwise xsel
+    if command -v xclip >/dev/null 2>&1; then
+      echo "$utterances" | xclip -selection clipboard
+      echo "\nCopied to clipboard using xclip"
+    elif command -v xsel >/dev/null 2>&1; then
+      echo "$utterances" | xsel -ib
+      echo "\nCopied to clipboard using xsel"
+    else
+      echo "\nCould not copy to clipboard. Please install xclip or xsel:"
+      echo "sudo apt-get install xclip    # for Debian/Ubuntu"
+      echo "sudo yum install xclip        # for RHEL/CentOS"
+      echo "sudo dnf install xclip        # for Fedora"
+    fi
   else
     echo "No utterances were collected."
   fi
