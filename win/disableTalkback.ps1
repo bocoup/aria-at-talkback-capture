@@ -6,15 +6,15 @@ $ROOT_DIR = Split-Path -Parent $SCRIPT_DIR
 . "$SCRIPT_DIR\common.ps1"
 
 if (-not (Find-Adb)) {
-    exit 1
+  exit 1
 }
 
 if (-not (Check-DeveloperMode)) {
-    exit 1
+  exit 1
 }
 
 if (-not (Check-TalkbackInstalled)) {
-    exit 1
+  exit 1
 }
 
 Write-Host "Disabling TalkBack..."
