@@ -35,12 +35,28 @@
     },
     "files": [
       "main.js",
+      "preload.js",
       "renderer.js",
       "index.html",
       "styles.css",
       "win/**/*",
       "macos/**/*",
-      "linux/**/*"
+      "linux/**/*",
+      "assets/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "win",
+        "to": "app/win"
+      },
+      {
+        "from": "macos", 
+        "to": "app/macos"
+      },
+      {
+        "from": "linux",
+        "to": "app/linux"
+      }
     ],
     "win": {
       "target": "nsis",

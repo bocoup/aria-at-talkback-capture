@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Event listeners
 function setupEventListeners() {
     refreshStatusBtn.addEventListener('click', checkSystemStatus);
+    document.getElementById('debug-status').addEventListener('click', debugStatus);
     enableTalkbackBtn.addEventListener('click', enableTalkback);
     disableTalkbackBtn.addEventListener('click', disableTalkback);
     openWebpageBtn.addEventListener('click', openWebpage);
@@ -75,19 +76,103 @@ async function checkSystemStatus() {
         const result = await window.electronAPI.checkAdb();
         
         if (result.success) {
-            setStatusIndicator(adbStatus, 'Connected', 'success');
-            setStatusIndicator(deviceStatus, 'Connected', 'success');
-            setStatusIndicator(talkbackStatus, 'Unknown', 'warning');
+            // Parse the output to determine individual statuses
+            const output = result.output;
+            
+            // Check ADB status
+            if (output.includes('✅ ADB found at:')) {
+                setStatusIndicator(adbStatus, 'Connected', 'success');
+            } else if (output.includes('❌ ADB not found')) {
+                setStatusIndicator(adbStatus, 'Not Found', 'error');
+            } else {
+                setStatusIndicator(adbStatus, 'Unknown', 'warning');
+            }
+            
+            // Check device status
+            if (output.includes('✅ Device connected')) {
+                setStatusIndicator(deviceStatus, 'Connected', 'success');
+            } else if (output.includes('❌ No device connected')) {
+                setStatusIndicator(deviceStatus, 'Not Connected', 'error');
+            } else {
+                setStatusIndicator(deviceStatus, 'Unknown', 'warning');
+            }
+            
+            // Check TalkBack status
+            if (output.includes('✅ TalkBack is enabled')) {
+                setStatusIndicator(talkbackStatus, 'Enabled', 'success');
+            } else if (output.includes('⚠️  TalkBack is not enabled')) {
+                setStatusIndicator(talkbackStatus, 'Not Enabled', 'warning');
+            } else if (output.includes('❌ TalkBack is not installed')) {
+                setStatusIndicator(talkbackStatus, 'Not Installed', 'error');
+            } else {
+                setStatusIndicator(talkbackStatus, 'Unknown', 'warning');
+            }
+            
+            showStatusMessage('System status updated', 'success');
         } else {
-            setStatusIndicator(adbStatus, 'Not Found', 'error');
-            setStatusIndicator(deviceStatus, 'Not Connected', 'error');
-            setStatusIndicator(talkbackStatus, 'Unknown', 'error');
+            setStatusIndicator(adbStatus, 'Error', 'error');
+            setStatusIndicator(deviceStatus, 'Error', 'error');
+            setStatusIndicator(talkbackStatus, 'Error', 'error');
+            showStatusMessage('Failed to check system status', 'error');
         }
     } catch (error) {
         setStatusIndicator(adbStatus, 'Error', 'error');
         setStatusIndicator(deviceStatus, 'Error', 'error');
         setStatusIndicator(talkbackStatus, 'Error', 'error');
         showStatusMessage('Failed to check system status', 'error');
+    }
+}
+
+// Debug status function
+async function debugStatus() {
+    try {
+        showStatusMessage('Running debug check...', 'info');
+        
+        // First, list all files in the app
+        const fileList = await window.electronAPI.listAppFiles();
+        console.log('App file structure:', fileList);
+        appendToOutput('=== App File Structure ===\n', 'info');
+        appendToOutput(`Base Path: ${fileList.basePath}\n`, 'info');
+        appendToOutput('Files:\n', 'info');
+        fileList.files.forEach(file => {
+            appendToOutput(`${file}\n`, 'info');
+        });
+        
+        // Then, check file structure
+        const fileInfo = await window.electronAPI.debugFiles();
+        console.log('File structure:', fileInfo);
+        appendToOutput('\n=== Platform File Check ===\n', 'info');
+        appendToOutput(JSON.stringify(fileInfo, null, 2), 'info');
+        
+        // Finally, try the status check
+        const result = await window.electronAPI.checkAdb();
+        
+        // Show detailed debug information
+        const debugInfo = `
+=== Debug Information ===
+Success: ${result.success}
+Output: ${result.output}
+Error: ${result.error || 'None'}
+Platform: ${navigator.platform}
+User Agent: ${navigator.userAgent}
+Timestamp: ${new Date().toISOString()}
+        `;
+        
+        console.log(debugInfo);
+        appendToOutput(debugInfo, 'info');
+        showStatusMessage('Debug information logged to console and output', 'success');
+        
+    } catch (error) {
+        const errorInfo = `
+=== Debug Error ===
+Error: ${error.error || error.message}
+Output: ${error.output || 'None'}
+Stack: ${error.stack || 'None'}
+        `;
+        
+        console.error(errorInfo);
+        appendToOutput(errorInfo, 'error');
+        showStatusMessage('Debug error logged to console and output', 'error');
     }
 }
 

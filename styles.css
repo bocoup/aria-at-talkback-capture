@@ -385,4 +385,11 @@ section h2 {
     .status-message {
         animation: none;
     }
+}
+
+/* Status section */
+.status-controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
 } 

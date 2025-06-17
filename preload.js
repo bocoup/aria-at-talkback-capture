@@ -15,6 +15,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // System check
   checkAdb: () => ipcRenderer.invoke('check-adb'),
   
+  // Debug
+  debugFiles: () => ipcRenderer.invoke('debug-files'),
+  listAppFiles: () => ipcRenderer.invoke('list-app-files'),
+  
   // Event listeners for real-time capture data
   onCaptureData: (callback) => ipcRenderer.on('capture-data', callback),
   onCaptureError: (callback) => ipcRenderer.on('capture-error', callback),
