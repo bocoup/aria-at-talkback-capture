@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARIA-AT TalkBack Capture</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ARIA-AT TalkBack Capture</h1>
+            <p>Cross-platform GUI for capturing TalkBack utterances on Android devices</p>
+        </header>
+
+        <main>
+            <!-- System Status Section -->
+            <section class="status-section">
+                <h2>System Status</h2>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <label for="adb-status">ADB Status:</label>
+                        <span id="adb-status" class="status-indicator">Checking...</span>
+                    </div>
+                    <div class="status-item">
+                        <label for="device-status">Device Status:</label>
+                        <span id="device-status" class="status-indicator">Unknown</span>
+                    </div>
+                    <div class="status-item">
+                        <label for="talkback-status">TalkBack Status:</label>
+                        <span id="talkback-status" class="status-indicator">Unknown</span>
+                    </div>
+                </div>
+                <button id="refresh-status" class="btn btn-secondary">Refresh Status</button>
+            </section>
+
+            <!-- TalkBack Control Section -->
+            <section class="control-section">
+                <h2>TalkBack Control</h2>
+                <div class="button-group">
+                    <button id="enable-talkback" class="btn btn-primary">Enable TalkBack</button>
+                    <button id="disable-talkback" class="btn btn-danger">Disable TalkBack</button>
+                </div>
+            </section>
+
+            <!-- Web Page Control Section -->
+            <section class="control-section">
+                <h2>Web Page Control</h2>
+                <div class="url-input-group">
+                    <label for="url-input">URL to open:</label>
+                    <input type="url" id="url-input" placeholder="https://example.com" class="url-input">
+                    <button id="open-webpage" class="btn btn-primary">Open in Chrome</button>
+                </div>
+            </section>
+
+            <!-- Capture Control Section -->
+            <section class="control-section">
+                <h2>Utterance Capture</h2>
+                <div class="capture-controls">
+                    <button id="start-capture" class="btn btn-success">Start Capture</button>
+                    <button id="stop-capture" class="btn btn-danger" disabled>Stop Capture</button>
+                    <button id="clear-output" class="btn btn-secondary">Clear Output</button>
+                </div>
+                
+                <div class="capture-status">
+                    <span id="capture-status" class="status-indicator">Ready</span>
+                </div>
+            </section>
+
+            <!-- Output Section -->
+            <section class="output-section">
+                <h2>Captured Utterances</h2>
+                <div class="output-container">
+                    <div id="capture-output" class="capture-output" role="log" aria-live="polite"></div>
+                </div>
+                <div class="output-controls">
+                    <button id="copy-output" class="btn btn-secondary">Copy to Clipboard</button>
+                    <button id="save-output" class="btn btn-secondary">Save to File</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Status Messages -->
+        <div id="status-messages" class="status-messages" role="status" aria-live="polite"></div>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html> 

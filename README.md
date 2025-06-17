@@ -1,4 +1,4 @@
-# ARIA-AT Talkback Capture
+# ARIA-AT TalkBack Capture
 
 This repository contains prototyping scripts for capturing TalkBack utterances on Android devices. Intended to serve the purposes of [ARIA-AT](https://aria-at.w3.org).
 
@@ -10,6 +10,47 @@ This was incepted as a native Android application. Such that a user would be abl
 2. Comfort with ARIA-AT through desktop has already been established so requiring heavy usage on a mobile platform may be less appealing.
 
 The result of that are the following scripts. The idea is these scripts can potentially be served behind some extension of the ARIA-AT web app, it's own tiny web app or some desktop-based app.
+
+## Cross-Platform GUI Application
+
+A new Electron-based GUI application has been added to provide a user-friendly interface for all TalkBack capture operations. The app works on Windows, macOS, and Linux.
+
+### Features
+
+- **System Status Monitoring**: Check ADB connection, device status, and TalkBack status
+- **TalkBack Control**: Enable and disable TalkBack with a single click
+- **Web Page Control**: Open URLs directly in Chrome on the connected Android device
+- **Real-time Utterance Capture**: Start/stop capture with live streaming of utterances
+- **Output Management**: Copy captured text to clipboard or save to file
+- **Cross-platform Support**: Works on Windows, macOS, and Linux
+
+### Installation and Usage
+
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+2. **Run in Development Mode**:
+   ```bash
+   npm run dev
+   ```
+
+3. **Build for Distribution**:
+   ```bash
+   # Build for all platforms
+   npm run build
+   
+   # Build for specific platform
+   npm run build:win    # Windows
+   npm run build:mac    # macOS
+   npm run build:linux  # Linux
+   ```
+
+4. **Prerequisites**:
+   - Node.js and npm installed
+   - ADB (Android Debug Bridge) installed and in PATH
+   - Android device connected via USB with USB debugging enabled
 
 ## Scripts
 

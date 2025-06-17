@@ -1,0 +1,58 @@
+{
+  "name": "aria-at-talkback-capture-gui",
+  "version": "0.0.1",
+  "description": "Cross-platform GUI for ARIA-AT TalkBack capture",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
+  },
+  "keywords": [
+    "aria-at",
+    "talkback",
+    "accessibility",
+    "testing",
+    "electron"
+  ],
+  "author": "Bocoup",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.6.4"
+  },
+  "dependencies": {
+    "node-pty": "^1.0.0"
+  },
+  "build": {
+    "appId": "com.aria-at.talkback-capture",
+    "productName": "ARIA-AT TalkBack Capture",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "renderer.js",
+      "index.html",
+      "styles.css",
+      "win/**/*",
+      "macos/**/*",
+      "linux/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png"
+    }
+  }
+} 
